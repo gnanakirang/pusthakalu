@@ -1,1 +1,22 @@
-test
+https://www.allsechro.com/Wellsfargo 
+WFG1714155/K..thik.
+
+UHG-
+WELL1714155/Happ...
+https://www.uhcpindia.com
+Plot No.29, LakeRidge Homes, Sambhipur, Bowarmpet-500043
+
+EPF
+UAN: 100153989507
+WF MID: APHYD00561930000023916
+PRK MID: APHYD00523020000002587
+ACC MID: MHBAN00456650000044091
+https://unifiedportal-mem.epfindia.gov.in/memberinterface/
+Passbook available at www.epfindia.gov.in >> Our Services >> For Employees >> Member Passbook
+
+Replace partial string(JSON) value:
+UPDATE CHKDEP.CHECK_DEPOSIT_FAIL_OVER 
+    SET SERVICE_REQUEST = REPLACE(SERVICE_REQUEST,'STORE_TRANSACTION_FAILED','NOT_INITIATED')
+    , t1.RETRY_COUNT = '0'
+    WHERE t1.TRANSACTION_ID = 481143;
+SELECT JSON_VALUE(SERVICE_REQUEST,'$.opsConStatus') from CHKDEP.CHECK_DEPOSIT_FAIL_OVER where TRANSACTION_ID = 481143;
