@@ -1,0 +1,46 @@
+Day - 4
+-------
+show dbs
+mongotop
+mongostat
+use big
+for(i=0;i<1000000;i++){print(i);db.big.insert({a:i,b:i+2,c:i+4})}
+db.big.count()
+
+db.big.dataSize()  #55000000
+db.big.storageSize()  #22679552
+db.big.getIndexes()
+
+db.big.createIndex({a:1})
+db.big.createIndex({a:1,b:1},{background:true})
+db.big.createIndex({a:1,b:1,c:1},{background:true})
+db.big.createIndex({c:1},{unique:true})
+db.big.getIndexes()
+
+db.big.totalIndexSize()  #75452416
+db.big.dataSize()  #55000000
+db.big.totalSize()  #98131968
+db.big.storageSize() #22679552
+
+db.big.find({a:908223})
+db.big.find({a:89}).explain("executionStats")
+db.big.find({c:9086}).explain("executionStats")
+
+db.big.find({a:{$gt:9},c:14}).explain("executionStats")
+
+db.big.getIndexes()
+db.big.dropIndexes()
+db.big.reIndex()
+db.big.dropIndex("a_1_b_1_c_1")
+
+#TTL indexes
+db.events.createIndex( { "loggedAt": 1 }, { expireAfterSeconds: 60} )
+db.events.insert({"loggedAt":new Date(),"mesg":"Disk full"})
+db.events.insert({"loggedAt":new Date(),"mesg":"Server not responding"})
+
+db.events.createIndex( { "eraseAt": 1 }, { expireAfterSeconds: 0} )
+db.events.insert({"eraseAt":new Date('April 09, 2020 10:49:00'),"mesg":"Disk full"})
+db.events.insert({"eraseAt":new Date('April 09, 2020 10:48:00'),"mesg":"Server not responding"})
+
+#Index usage stats
+db.big.aggregate({$indexStats:{}})

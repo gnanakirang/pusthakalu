@@ -1,0 +1,26 @@
+Day five
+--------
+RAC - Real application cluster(Oracle)
+DR - Disaster Recovery
+
+Replica Set 
+===========
+http://mongofactory.com/cs/now.html
+
+mkdir c:\data\r1
+mkdir c:\data\r2
+mkdir c:\data\r3
+
+mongod --dbpath c:\data\r1 --port 10000 --replSet wellsfargo
+mongod --dbpath c:\data\r2 --port 20000 --replSet wellsfargo
+mongod --dbpath c:\data\r3 --port 30000 --replSet wellsfargo
+
+mongo --port 10000
+
+on the mongo prompt
+
+rs.initiate()
+rs.add("localhost:20000")
+rs.add("localhost:30000")
+rs.status()
+

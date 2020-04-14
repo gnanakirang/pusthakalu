@@ -1,0 +1,99 @@
+#http://garuda.pythonanywhere.com/wells
+c:\data\db
+mongod
+mongo
+#show databases
+show dbs
+#Select/Create Database
+use day1
+#Insert document into collection
+db.wells.insert({"name":"kiran"})
+#Select document
+db.wells.find()
+db.wells.count()
+
+###############################
+#create data folder
+mkdir c:\data\db
+#start server
+mongod
+<starts listening on 27017>
+#start client
+mongo
+#list databases
+show dbs
+show collections
+#select/create database
+use day1
+#insert some docs into "wells" collection
+db.wells.insert({"name":"kiran"})
+db.wells.insert({"brand":"maruti","model":"ertiga"})
+#finding
+db.wells.find()
+#counting
+db.wells.count()
+#show current db
+db
+#list of collections
+show collections
+
+db.class5.insert( {"name" : "Hari" , "age" : 10 , "likes" : "Painting"} )
+db.class5.insert( {"name" : "Swathi" , "age" : 11 , "likes" : "Karate"} )
+db.class5.insert( {"name" : "Isha" , "age" : 10 , "likes" : "Reading"} )
+
+db.class5.insert( [ { "name" : "John" , "age" : 9, "likes" : "Cricket" } , { "name" :"Lekha" , "age" : 11, "likes" : "Cricket" } , {"name" : "Lahari" , "age" : 8, "likes" :"Singing"} ] )
+
+db.class5.find({"age":10})
+db.class5.find({"age":8,"likes":"Singing"})
+
+//You may want to try out $lt , $gte , $lte , $eq , $ne
+//Finds all students with age greater than 10
+db.class5.find({"age":{$gt:10}})
+db.class5.find({"age":{$gte:10}})
+
+//Checks in scalar and vector field
+db.class5.find({"likes":"Cricket"})
+
+//Finds all students who like “Cricket” most
+db.class5.find({"likes.0":"Cricket"})
+
+//Finds all students who like “Cricket” or “Reading”
+db.class5.find({$or:[{"likes":"Cricket"},{"likes":"Reading"}]})
+
+//Projection
+db.class5.find( { age: 10 }, { _id: 0 } )
+db.class5.find( { age: 10 }, { _id: 0,name:1 } )
+
+//"errmsg" : "Projection cannot have a mix of inclusion and exclusion."
+db.class5.find( { age: 10 }, { name:1,age:0 } )
+
+//Update
+db.xyz.update({"name":"Kiran"},{$set:{"job":"SoftwareEnginer"}})
+db.xyz.update({"name":"Kiran"},{$set:{"job":"Trainer"}},{"multi":true})
+db.xyz.update({"name":"Dheer"},{$set:{"job":"Kid"}},{"multi":true,"upsert":true})
+db.xyz.update({}, {$set:{"city":"Hyderabad"}}, {"multi":true})
+
+//Update - working with arrays
+//This will add 89 to marks array
+db.class5.update({ "age": 10 },{ $push: { marks: 89 } },{ multi:1 })
+
+//This will add “Swimming” to likes array if it is not already there
+db.class5.update({ age: 10 },{ $addToSet: { "likesA": "Swimming" } },{"multi":true})
+
+Aggregation
+-----------
+db.abcd.insert({'name':'Ramesh',experience:{Intergraph:'IT Head',Genpact:'AVP'}})
+db.abcd.find().pretty()
+db.abcd.update({name:'Ramesh'},{$set:{'experience.HCL':'AGM'}})
+db.abcd.update({name:'Ramesh'},{$set:{'skills':['MongoDB','AngularJS']}})
+db.abcd.update({name:'Ramesh'},{$push:{'skills':'Python'}})
+db.abcd.update({name:'Ramesh'},{$addToSet:{'skills':'Python'}})
+db.abcd.update({name:'Ramesh'},{$pull:{skills:'AngularJS'}})
+db.abcd.update({name:'Ramesh'},{$pop:{skills:1}})
+
+
+
+
+
+
+

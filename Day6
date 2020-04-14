@@ -1,0 +1,90 @@
+Day 6
+-----
+rs.help()
+rs.slaveOk()
+
+mongo --port 20000
+
+Change streams(deltas of oplog)
+
+Clustering/Sharding
+-------------------
+ShardKey/Cardinality
+Auto increment
+
+Chunck
+
+Mongos
+Balancer/Auto Balancing
+
+
+Day7
+----
+
+mongo --host 192.168.20.151
+sh.status()
+
+for(i=0;i<1000000;i++){db.aadhaar.insert({"age":i,name:"ramesh".repeat(1000)})}
+--------
+use admin
+sh.addShard("192.168.20.158:27018")
+##sh.removeShard("192.168.20.153:27018") -- not a command
+db.adminCommand({"removeShard":"192.168.20.153:27018"})
+--------
+
+use admin
+
+#enable sharding on a database of your choice
+
+db.runCommand( { enablesharding  : "gnanakiran" } )
+
+#Enable sharding for on a collection and mention shard key(range):
+
+db.runCommand( { shardcollection : "gnanakiran.data", key : { mobile : 1 } } )
+
+#Enable sharding for on a collection and mention shard key(hashed):
+
+db.runCommand( { shardcollection : "gnanakiran.info", key : { mobile : "hashed" } } )
+
+
+use admin
+
+db.runCommand( { enablesharding  : "gnanakiran" } )
+
+db.runCommand( { shardcollection : "gnanakiran.data", key : { mobile : 1 } } )
+
+db.runCommand( { shardcollection : "gnanakiran.info", key : { mobile : "hashed" } } )
+for(i=1000000;i<2000000;i++){db.data.insert({"mobile":i,name:"gnanakiran".repeat(1000)})}
+for(i=2000000;i<3000000;i++){db.info.insert({"mobile":i,name:"gnanakiran".repeat(1000)})}
+
+for(i=0;i<100000;i++){db.abc.insert({"serial":i})}
+
+db.agg.insert({name:'Ramesh',skills:['Perl','PHP','Python']})
+db.agg.insert({name:'Ram',skills:['Perl','MongoDB','Python']})
+db.agg.insert({name:'Suresh',skills:['Perl','PHP','Java']})
+db.agg.insert({name:'Siva',skills:['C','PHP','C++']})
+db.agg.insert({name:'Harini',skills:['C#','PHP','HTML']})
+db.agg.insert({name:'Hari',skills:['C#']})
+db.agg.insert({name:'Harini',skills:['C#',"perl"]})
+db.agg.insert({name:'Harsitha',skills:['C#',"Perl"]})
+db.agg.insert({name:'Harini',skills:['C',"Perl"]})
+db.agg.insert({name:'Harshita',skills:['C',"Perl"]})
+db.agg.insert({name:'Harish',skills:['C#','PHP','HTML','Python']})
+
+#Find top 3 skills
+db.agg.aggregate([
+{$unwind:"$skills"},
+{$project:{"_id":0,"skill":"$skills"}},
+{$group:{"_id":"$skill","count":{"$sum":1}}},
+{$sort:{"count":-1}},
+{$limit:3}
+])
+
+db.agg.aggregate([
+{$unwind:"$skills"},
+{$project:{"_id":0,"skill":"$skills"}},
+{$group:{"_id":"$skill","count":{"$sum":1}}},
+{$sort:{"count":1}},
+{$limit:1}
+])
+

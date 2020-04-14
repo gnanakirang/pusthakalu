@@ -1,0 +1,44 @@
+http://garuda.pythonanywhere.com/
+
+db.xyz.insert({"name":"Ramesh"})
+db.xyz.update({"name":"Ramesh"},{"job":"Trainer"})
+####################
+
+db.createCollection("employees",{validator:{$and:[{name:{$type:"string"}},{email:{$regex:/@gmail\.com$/}},{gender:{$in:["Male","Female"]}},{address:{$exists:true}},]}})
+
+db.employees.insert({'name':'Kiran','email':'gnanakiran@gmail.com', 'gender':'Male','address':'Plot23,LRH,Hyd'})
+db.employees.insert({'name':'Kalyani','email':'kalyani.kiran@gmail.com', 'gender':'Female'}) #"code" : 121, "errmsg" : "Document failed validation"
+db.employees.insert({'name':'Kalyani','email':'kalyani.kiran@Yahoo.com', 'gender':'Female','address':'Plot23,LRH,Hyd'})
+db.employees.insert({'name':'Kalyani','email':'kalyani.kiran@gmail.com', 'gender':'Female','address':'Plot23,LRH,Hyd'})
+db.employees.insert({'name':'Krithika', 'gender':'Female','address':'Plot23,LRH,Hyd'})
+db.employees.insert({'name':'Krithika','email':'krithika.gangone@yahoo.com', 'gender':'Female','address':'Plot23,LRH,Hyd'})
+db.employees.insert({'name':'Krithika','email':'krithika.gangone@gmail.com', 'gender':'Female','address':'Plot23,LRH,Hyd'})
+db.employees.insert({'name':'Karthik','email':'Karthik.gangone@gmail.com', 'gender':'Malexx','address':'Plot23,LRH,Hyd'})
+db.employees.insert({'name':'Karthik','email':'Karthik.gangone@gmail.com', 'gender':'Male','address':'Plot23,LRH,Hyd'})
+
+####################
+
+db.createCollection("log",{capped:true,size:1000000,max:10})
+db.log.insert({'slNo':1})
+
+############
+
+db.employee.insert({FirstName : 'Byomkesh', LastName:  'Bakshy', position : 'CFO', wage : 180000.00 })
+db.employee.insert({FirstName : 'Sherlock', LastName:  'Holmes', position : 'CTO', wage : 210000.00 })
+db.employee.insert({FirstName : 'Ramesh', LastName:  'Sannareddy', position : 'COO', wage : 180000.00 })
+
+#Create a view called employee_names that shows only full names:
+db.createView(
+'employee_names',
+'employee', 
+[{ $project : { _id : 0,
+"fullname" : {$concat : ["$FirstName", " ", "$LastName"]}}}]
+)
+
+db.employee_names.find()
+
+####################
+Indexies
+--------
+
+db.big.find()
