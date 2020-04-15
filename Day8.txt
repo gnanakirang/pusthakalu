@@ -1,0 +1,30 @@
+Day 8
+-----
+for(i=0;i<100000;i++){db.xyz.insert({"age":i,"mobile":i*20,"pincode":i+5})}
+mongoexport -d day7 -c abc -o export.json
+
+mongoexport -d day7 -c xyz -o xyz.json
+
+mongoexport -d day7 -c xyz -q {\"age\":100}
+
+mongoexport -d day7 -c xyz -q {\"age\":{\"$lt\":100}} 
+
+mongoexport -d day7 -c xyz -q {\"age\":{\"$lt\":100}} --type=csv -f age,mobile,pincode -o xyz.csv
+
+mongoimport -d day8 -c test --file xyz.json
+mongoimport -d day8 -c test --file xyz.json --upsert
+
+for(i=0;i<100000;i++){db.csvtest1.insert({"age":i,"address":{"mobile":i*20,"pincode":i+5}})}
+mongoexport -d day7 -c csvtest1 -q {\"age\":{\"$lt\":100}} --type=csv -f age,address.mobile,address.pincode -o csvtest1.csv
+
+mongodump
+mongorestore
+
+========================
+Authantication
+--------------
+use admin
+db.help()
+db.createUser({name:"kiran",pwd:"Kiran123"})
+mongod --dbpath C:/temp --auth
+

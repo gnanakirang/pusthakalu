@@ -1,0 +1,55 @@
+#import data
+mongoimport -d guidebook -c restaurants --file ./restaurants.json
+
+#start load testing script
+mongo guidebook --eval "load('./load-test.js');r.performReads();" /dev/null 2>&1 &
+
+#start mongo client
+mongo guidebook
+
+#current op commands
+
+db.adminCommand({"currentOp": 1})
+
+db.adminCommand({"currentOp": 1, "$ownOps" : true})
+
+db.currentOp()
+
+db.currentOp({"$ownOps":true})
+
+db.currentOp({"$all":true})
+
+#queries not using any index
+
+db.adminCommand({
+ "currentOp": true,
+ "op" : "query",
+ "planSummary": "COLLSCAN"
+})
+
+
+#operations with high yields
+
+db.adminCommand({
+ "currentOp": true,
+ "ns": /^guidebook\./,
+ "numYields" : {"$gte": 100}
+})
+
+#operations waiting for locks
+
+db.adminCommand({
+ "currentOp": true,
+ "waitingForLock" : true,
+ "$or": [
+    { "op" : { "$in" : [ "insert", "update", "remove" ] } },
+    { "query.findandmodify": { "$exists": true } }
+  ]
+})
+
+#long running querys
+
+db.adminCommand({
+ "currentOp": true,
+ "microsecs_running" : {"$gt" : 100000}
+})
